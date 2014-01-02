@@ -60,3 +60,20 @@ func TestRC6(t *testing.T) {
 		}
 	}
 }
+
+func BenchmarkRC6(b *testing.B) {
+	key := make([]byte, 16)
+	blk := make([]byte, 16)
+
+	c, err := NewCipher(key)
+	if err != nil {
+		b.Fatal(err)
+	}
+
+	b.SetBytes(int64(len(blk)))
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		c.Encrypt(blk, blk)
+	}
+}
