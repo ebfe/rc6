@@ -4,7 +4,6 @@ import (
 	"crypto/cipher"
 	"encoding/binary"
 	"errors"
-	"fmt"
 )
 
 const (
@@ -29,7 +28,6 @@ func NewCipher(key []byte) (cipher.Block, error) {
 
 	c := &rc6{}
 	c.s = expandkey(key)
-	fmt.Printf("S: %08x\n", c.s)
 	return c, nil
 }
 
@@ -49,7 +47,6 @@ func (c *rc6) Encrypt(dst, src []byte) {
 	D += c.s[1]
 
 	for r := 1; r <= 20; r++ {
-		fmt.Printf("r%d: %08x %08x %08x %08x\n", r-1, A, B, C, D)
 		t := rotl(B*(2*B+1), 5)
 		u := rotl(D*(2*D+1), 5)
 		A = rotl(A^t, u&0x1f) + c.s[2*r]
@@ -100,7 +97,6 @@ func expandkey(key []byte) []uint32 {
 	for i := range l {
 		l[i] = binary.LittleEndian.Uint32(key[i*4:])
 	}
-	fmt.Printf("%08x\n", l)
 
 	s := make([]uint32, 44)
 	s[0] = _P
