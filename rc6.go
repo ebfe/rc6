@@ -1,3 +1,4 @@
+// Package rc6 implements the RC6 cipher
 package rc6
 
 import (
